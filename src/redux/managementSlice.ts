@@ -22,16 +22,26 @@ export const managementSlice = createSlice({
   initialState,
   reducers: {
     addToList: (state, action: PayloadAction<Transaction>) => {
-      state.transactions.push({ ...action.payload });
+      if (action.payload.amount != 0 && action.payload.description)
+        state.transactions.push({ ...action.payload });
+      else if (action.payload.amount == 0) alert("enter a valid number");
       state.balance += action.payload.amount;
       if (action.payload.amount > 0) {
         state.income += action.payload.amount;
       } else {
         state.expense += action.payload.amount;
       }
-      console.log(state.transactions)
     },
     removeFromList: (state, action: PayloadAction<string>) => {
+      const item = state.transactions.find((i) => i.id == action.payload);
+      if (item != undefined) {
+        state.balance -= item.amount;
+        if (item.amount > 0) {
+          state.income -= item.amount;
+        } else {
+          state.expense -= item.amount;
+        }
+      }
       state.transactions = state.transactions.filter(
         (t) => t.id != action.payload,
       );
@@ -40,5 +50,4 @@ export const managementSlice = createSlice({
       state.transactions = [];
     },
   },
-
 });

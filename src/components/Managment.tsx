@@ -9,7 +9,10 @@ export default function Managment() {
   const dispatch = useDispatch();
   const { addToList } = managementSlice.actions;
   return (
-    <form className="my-5 *:capitalize *:mx-auto *:mt-1" onSubmit={(e)=>e.preventDefault()}>
+    <form
+      className="my-5 *:capitalize *:mx-auto *:mt-1"
+      onSubmit={(e) => e.preventDefault()}
+    >
       Description:{" "}
       <input
         className="block bg-amber-50 text-black p-1 "
@@ -35,19 +38,21 @@ export default function Managment() {
       />
       <button
         className="cursor-pointer bg-red-600 rounded-xl  mt-90 p-2 px-4"
-        onClick={() =>
+        onClick={() => {
           dispatch(
             addToList({
               id: uuidv4(),
               description: Descinput,
               amount: amountInput,
             }),
-          )
-        }
+          );
+          setAmountInput(0);
+          setDescInput("");
+        }}
       >
         add transction
       </button>
-      <Transaction/>
+      <Transaction />
     </form>
   );
 }

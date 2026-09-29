@@ -1,16 +1,31 @@
-import { useSelector } from "react-redux";
-import type { Management, Transaction } from "../redux/managementSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  managementSlice,
+  type Management,
+  type Transaction,
+} from "../redux/managementSlice";
 import TransactionItem from "./TransactionItem";
 
 export default function Transaction() {
-  // const transactions = useSelector((state: Array<Management>) => state.transactions);
-  // console.log(transactions.)
+  const { transactions } = useSelector((state: Management) => state);
+  const { emptyList } = managementSlice.actions;
+  const dispatch = useDispatch();
+
   return (
     <div>
-      {transactions?.map((m) => (
-        <TransactionItem key={m.id} {...m} />
-      ))}
-      <button>empty</button>
+      <div>
+        {transactions?.map((m) => (
+          <TransactionItem key={m.id} item={m} />
+        ))}
+        {transactions.length > 0 && (
+          <button
+            className="cursor-pointer"
+            onClick={() => dispatch(emptyList())}
+          >
+            empty
+          </button>
+        )}
+      </div>
     </div>
   );
 }
