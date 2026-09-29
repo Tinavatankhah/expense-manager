@@ -5,6 +5,7 @@ import {
   type Transaction,
 } from "../redux/managementSlice";
 import TransactionItem from "./TransactionItem";
+import Search from "./Search";
 
 export default function Transaction() {
   const { transactions } = useSelector((state: Management) => state);
@@ -12,20 +13,24 @@ export default function Transaction() {
   const dispatch = useDispatch();
 
   return (
-    <div>
-      <div>
-        {transactions?.map((m) => (
-          <TransactionItem key={m.id} item={m} />
-        ))}
-        {transactions.length > 0 && (
-          <button
-            className="cursor-pointer"
-            onClick={() => dispatch(emptyList())}
-          >
-            empty
-          </button>
-        )}
-      </div>
-    </div>
+    <>
+      {transactions.length > 0 && (
+        <div className="bg-gray-100 pt-2">
+          <Search />
+          <div>
+            {transactions?.map((m) => (
+              <TransactionItem key={m.id} item={m} />
+            ))}
+
+            <button
+              className="cursor-pointer bg-black rounded-full p-2 m-2"
+              onClick={() => dispatch(emptyList())}
+            >
+              empty
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

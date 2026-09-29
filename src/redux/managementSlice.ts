@@ -49,5 +49,30 @@ export const managementSlice = createSlice({
     emptyList: (state) => {
       state.transactions = [];
     },
+    editItem: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        newInfo: { description: string; amount: number };
+      }>,
+    ) => {
+      const { id, newInfo } = action.payload;
+      const item = state.transactions.find((i) => i.id == id);
+      if (item) {
+        state.balance = state.balance - item.amount + newInfo.amount;
+        if (item.amount > 0) {
+          state.income -= item.amount;
+        } else {
+          state.expense -= item.amount;
+        }
+        if (newInfo.amount > 0) {
+          state.income += newInfo.amount;
+        } else {
+          state.expense += newInfo.amount;
+        }
+        item.amount = newInfo.amount;
+        item.description = newInfo.description;
+      }
+    },
   },
 });
